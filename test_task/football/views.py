@@ -10,8 +10,10 @@ def index(request):
 
 def prematch(request):
     all_leagues = Leagues.objects.all()
+
     response_text = ""
 
     for l in all_leagues:
-        response_text += l.title + ' ' + l.country + ' ' + l.created_at + '<br/>'
+        response_text += "{0}-{1}-{2}<br>".format(l.title,l.country,l.created_at)
+
     return HttpResponse(response_text)
