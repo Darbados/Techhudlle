@@ -218,7 +218,7 @@ class Sofascore:
 
     def write_in_file(self, data):
         try:
-            dir_name = os.path.abspath(os.path.join(path_app, 'sofascore_debug/results'))
+            dir_name = os.path.abspath(os.path.join(path_app, 'football_events/publisher_source/results'))
             if not os.path.exists(dir_name):
                 os.makedirs(dir_name)
             filename = '{}/{}_{}.json'.format(dir_name, self.sport, self.period)
