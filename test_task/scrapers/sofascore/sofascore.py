@@ -31,7 +31,11 @@ class Sofascore:
         if period == 'live':
             sport_content = self.session.get("{}football/livescore/json".format(self.host))
             now = datetime.now().strftime("%Y-%m-%d")
-            sport_content_live = {now: json.loads(sport_content.content)['sportItem']['tournaments']}
+            try:
+                sport_content_live = {now: json.loads(sport_content.content)['sportItem']['tournaments']}
+            except TypeError:
+                print("There are no live events currently.")
+                return {}
 
             return sport_content_live
 
