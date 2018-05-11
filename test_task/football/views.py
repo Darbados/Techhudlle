@@ -14,4 +14,4 @@ def prematch(request):
 
     for l in all_leagues:
         response_text += l.title + ' ' + l.country + ' ' + l.created_at + '<br/>'
-    return HttpResponse(timezone.now())
+    return HttpResponse(response_text)

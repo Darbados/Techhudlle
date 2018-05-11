@@ -1,4 +1,5 @@
 import json, os, sys
+print(sys.path)
 
 def read_json(filename):
     with open(filename, 'r') as fp:

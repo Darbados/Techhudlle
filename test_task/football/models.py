@@ -8,6 +8,6 @@ class Leagues(models.Model):
     created_at = models.DateTimeField('date created')
 
     class Meta:
-        app_label = 'football_events'
+        app_label = 'football'
 
 
