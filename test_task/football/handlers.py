@@ -1,5 +1,12 @@
 import json, os, sys
-print(sys.path)
+
+BASEPATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+sys.path.append(BASEPATH)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test_task.test_task.settings')
+
+import django
+django.setup()
+
 
 def read_json(filename):
     with open(filename, 'r') as fp:
@@ -12,5 +19,6 @@ def read_json(filename):
                 if len(data[date][league]):
                     country = data[date][league][0]['country']
                 print(date, league_title, country)
+
 
 read_json('publisher_source/results/soccer_prematch.json')

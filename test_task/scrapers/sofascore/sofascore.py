@@ -218,7 +218,7 @@ class Sofascore:
 
     def write_in_file(self, data):
         try:
-            dir_name = os.path.abspath(os.path.join(path_app, 'football_events/publisher_source/results'))
+            dir_name = os.path.abspath(os.path.join(path_app, 'football/publisher_source/results'))
             if not os.path.exists(dir_name):
                 os.makedirs(dir_name)
             filename = '{}/{}_{}.json'.format(dir_name, self.sport, self.period)
@@ -238,6 +238,12 @@ class Sofascore:
             data = getattr(self, method)()
 
             self.write_in_file(data)
+            '''
+            try:
+                self.session.post('http://127.0.0.1:8000/football/save_in_database/', data=json.dumps(data))
+            except ConnectionError:
+                print("There is no connection to the server, so I can't send the data.")
+            '''
             finish_time = datetime.now()
             iteration_time = (finish_time-starttime).seconds
             print(">>>>>>>>>>>>>>>>>> ITERATION FINISHED AT {}, for {} seconds".format(finish_time.strftime("%Y-%m-%d %H:%M:%S"), iteration_time))
