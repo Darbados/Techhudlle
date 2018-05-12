@@ -1,6 +1,6 @@
 __author__ = "Petar Netev"
 
-import requests, json, os, sys, traceback, time, codecs
+import requests, json, os, sys, traceback, time
 from datetime import datetime, timedelta
 from collections import OrderedDict
 
@@ -158,8 +158,8 @@ class Sofascore:
                             'liveScore': liveScore
                         }
 
-                        # If there are odds and the event is not finished, we'll get the fullTimeOdds & doubleChanceOdds, if
-                        # available.
+                        # If there are odds and the event is not finished, we'll get the fullTimeOdds &
+                        #  doubleChanceOdds, if available.
                         if 'odds' in event and status != 'finished':
                             e['odds'] = {}
                             try:
@@ -238,12 +238,22 @@ class Sofascore:
             data = getattr(self, method)()
 
             self.write_in_file(data)
-            '''
+
+            """
+            The below piece of code will handle the sending information to the django, i.e. the role of the publisher.
+            """
             try:
-                self.session.post('http://127.0.0.1:8000/football/save_in_database/', data=json.dumps(data))
-            except ConnectionError:
-                print("There is no connection to the server, so I can't send the data.")
-            '''
+                if self.period == 'prematch':
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_prematch/', data=json.dumps(data))
+                elif self.period == 'live':
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_live/', data=json.dumps(data))
+                else:
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_finished/', data=json.dumps(data))
+            except:
+                print("There is no connection to the server, so I can't send the data, but I'll continue work as I am "
+                      "independent from the server.")
+                continue
+
             finish_time = datetime.now()
             iteration_time = (finish_time-starttime).seconds
             print(">>>>>>>>>>>>>>>>>> ITERATION FINISHED AT {}, for {} seconds".format(finish_time.strftime("%Y-%m-%d %H:%M:%S"), iteration_time))

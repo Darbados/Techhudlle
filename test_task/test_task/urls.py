@@ -19,5 +19,5 @@ from django.conf.urls import include, url
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^football/', include('football.urls'))
+    url(r'^football/', include('football.urls', namespace='football'))
 ]

@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="description" content="Football events">
+  <meta name="keywords" content="football, events">
+  <meta name="author" content="Petar Netev">
+  <!--Responsive Viewport Meta tag-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <a href="{% url 'football:index' %}">Home</a>
+    <div class="container" ng-app="footballApp" ng-controller="FootballControler">
+        <ul id="live_events">
+            <li class="event" ng-repeat="event in events">
+                Title: <span ng-bind="event.title"></span><br>
+                Country: <span ng-bind="event.country"></span><br>
+                Live Minute: <span ng-bind="event.live_minute"></span><br>
+                Score: <span ng-bind="event.live_score_home"></span> - <span ng-bind="event.live_score_away"></span>
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="{% static 'football/js/events_live.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <header>
+        {{ message }}
+    </header>
+    <nav>
+        <a href="leagues.html">Leagues</a>
+        <a href="teams.html">Teams</a>
+        <a href="{% url 'football:prematch_events' %}">Prematch</a>
+        <a href="{% url 'football:live_events' %}">Live</a>
+        <a href="finished_events.html">Finished</a>
+        <a href="#">About</a>
+    </nav>
+</body>
+</html>
