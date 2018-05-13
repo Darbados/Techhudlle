@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Teams page</title>
-</head>
-<body>
+{% extends 'football/index.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title%}<title>{{ title }}</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">All Teams Table</h1>
+    <table id="teams" class="compact" cellspacing="0" width="85%">
+        <thead>
+            <tr>
+                <th class="dt-justify legend">ID</th>
+                <th class="dt-justify legend">Title</th>
+                <th class="dt-justify legend">Country</th>
+                <th class="dt-justify legend">League</th>
+                <th class="dt-justify legend">Created At</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th class="dt-justify legend">ID</th>
+                <th class="dt-justify legend">Title</th>
+                <th class="dt-justify legend">Country</th>
+                <th class="dt-justify legend">League</th>
+                <th class="dt-justify legend">Created At</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $.get("/football/api_teams/", function( response ){
+            $('#teams').DataTable({
+                data: response,
+                columns: [
+                    {data: 'id'},
+                    {data: 'title'},
+                    {data: 'country'},
+                    {data: 'league'},
+                    {data: 'created_at'},
+                ]
+            });
+        });
+    });
+</script>
+{% endblock %}

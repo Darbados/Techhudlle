@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.views import View
 from rest_framework.views import APIView
 from .models import Leagues, Teams, EventsPremach, EventsLive, EventsFinished
-from datetime import datetime
+from datetime import datetime, timedelta
 from .serializers import EventsPrematchSerializer, EventsLiveSerializer, EventsFinishedSerializer, TeamsSerializer, LeaguesSerializer
 from .handlers import handle_received_source
 import json
@@ -210,16 +210,35 @@ def prematch(request):
     context = {'title': 'Prematch events'}
     return render(request, template, context)
 
+
 def live(request):
     template = 'football/live_events.html'
     context = {'title': 'Live events'}
     return render(request, template, context)
 
 
+def finished(request):
+    template = 'football/finished_events.html'
+    context = {'title': 'Finished events'}
+    return render(request, template, context)
+
+
+def teams(request):
+    template = 'football/teams.html'
+    context = {'title': 'Teams page'}
+    return render(request, template, context)
+
+
+def leagues(request):
+    template = 'football/leagues.html'
+    context = {'title': 'Leagues page'}
+    return render(request, template, context)
+
+
 class EventsPrematchAPI(APIView):
 
     def get(self, request):
-        events = EventsPremach.objects.all()
+        events = EventsPremach.objects.filter(start_time__gte=timezone.now())
 
         serializer = EventsPrematchSerializer(events, many=True)
 
@@ -229,7 +248,7 @@ class EventsPrematchAPI(APIView):
 class EventsLiveAPI(APIView):
 
     def get(self, request):
-        events = EventsLive.objects.all()
+        events = EventsLive.objects.filter(created_at__gt=(datetime.now() - timedelta(minutes=105)))
 
         serializer = EventsLiveSerializer(events, many=True)
 
@@ -249,7 +268,7 @@ class EventsFinishedAPI(APIView):
 class TeamsAPI(APIView):
 
     def get(self, request):
-        events = Teams.objects.all()
+        events = Teams.objects.all().order_by('league')
 
         serializer = TeamsSerializer(events, many=True)
 
@@ -259,7 +278,7 @@ class TeamsAPI(APIView):
 class LeaguesAPI(APIView):
 
     def get(self, request):
-        events = Leagues.objects.all()
+        events = Leagues.objects.all().order_by('country')
 
         serializer = LeaguesSerializer(events, many=True)
 

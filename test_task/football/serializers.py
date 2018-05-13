@@ -22,7 +22,6 @@ class EventsFinishedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventsFinished
-        model = EventsFinished
         fields = '__all__'
 
 
@@ -30,11 +29,11 @@ class TeamsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teams
-        fields = ('id', 'title', 'country', 'created_at')
+        fields = ('id', 'title', 'country', 'league', 'created_at')
 
 
 class LeaguesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Leagues
-        fields = ('id', 'title', 'country', 'created_at')
+        fields = ('id', 'league_title', 'country', 'added_at')

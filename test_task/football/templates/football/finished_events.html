@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'football/index.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title%}<title>{{ title }}</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">All finished events table</h1>
+    <table id="events_finished" class="compact" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>Start time</th>
+                <th>Final score home</th>
+                <th>Final score away</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>Start time</th>
+                <th>Final score home</th>
+                <th>Final score away</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $.get("/football/api_events_finished/", function( response ){
+
+            $('#events_finished').DataTable({
+                data: response,
+                columns: [
+                    {data: 'id'},
+                    {data: 'title'},
+                    {data: 'country'},
+                    {data: 'status'},
+                    {data: 'start_time'},
+                    {data: 'final_score_home'},
+                    {data: 'final_score_away'},
+                ]
+            });
+        });
+    });
+</script>
+{% endblock %}

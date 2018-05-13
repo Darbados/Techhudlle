@@ -4,19 +4,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    {% block title %}<title>Home</title>{% endblock %}
+    <link rel="stylesheet" href="{% static 'football/css/index.css' %}" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+    {% block header %}
     <header>
         {{ message }}
     </header>
+    {% endblock %}
     <nav>
-        <a href="leagues.html">Leagues</a>
-        <a href="teams.html">Teams</a>
+        <a href="{% url 'football:index' %}">Home</a>
+        <a href="{% url 'football:all_leagues' %}">Leagues</a>
+        <a href="{% url 'football:all_teams' %}">Teams</a>
         <a href="{% url 'football:prematch_events' %}">Prematch</a>
         <a href="{% url 'football:live_events' %}">Live</a>
-        <a href="finished_events.html">Finished</a>
+        <a href="{% url 'football:finished_events' %}">Finished</a>
         <a href="#">About</a>
     </nav>
+    {% block content %}
+    <section>
+        <ul class="legend">
+            <p class="legend-p">Here I'll describe in few steps what you can do with this simple site</p>
+            <li class="legend-item">By selecting <span>Leagues</span> you'll see all the leagues that we have within our storage.</li>
+            <li class="legend-item">By selecting <span>Teams</span> you'll see all the teams that we have within our storage.</li>
+            <li class="legend-item">By selecting <span>Prematch</span> you'll see all the events that we have within our storage, which are about to start later today or in the next days.</li>
+            <li class="legend-item">By selecting <span>Live</span> you'll see all the live events that we have, but there could be nothing as well, if there are no live events.</li>
+            <li class="legend-item">By selecting <span>Finished</span> you'll see already finished events with some info for each one.</li>
+        </ul>
+    </section>
+    {% endblock %}
+    {% block footer %}
+    <footer>
+        Just a basic footer.
+    </footer>
+    {% endblock %}
 </body>
 </html>
