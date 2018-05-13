@@ -79,23 +79,16 @@ class SaveInDatabaseLive(View):
                 # Fill the teams & events tables with data
                 if len(data[date][league]):
                     for event in data[date][league]:
+                        event_id = event['event_id']
                         team1 = event["home_team"]
                         team2 = event["away_team"]
                         event_title = event["event_name"]
                         start_time = event["start_date"]
 
                         event_status = event["status"]
-                        live_minute = 0
-                        live_score_home = 0
-                        live_score_away = 0
-
-                        if period == 'live':
-                            live_minute = event["liveScore"]["live_minute"]
-                            live_score_home = event["liveScore"]["home_team_score"]
-                            live_score_away = event["liveScore"]["away_team_score"]
-                        elif period == 'finished':
-                            live_score_home = event["liveScore"]["home_team_score"]
-                            live_score_away = event["liveScore"]["away_team_score"]
+                        live_minute = event["liveScore"]["live_minute"]
+                        live_score_home = event["liveScore"]["home_team_score"]
+                        live_score_away = event["liveScore"]["away_team_score"]
 
                         if not Teams.objects.filter(title=team1).exists():
                             t1 = Teams.objects.create(title=team1, country=country, league=league_title,
@@ -107,8 +100,9 @@ class SaveInDatabaseLive(View):
                         else:
                             pass
 
-                        if EventsLive.objects.filter(title=event_title).exists():
-                            ev = EventsLive.objects.get(title=event_title)
+                        if EventsLive.objects.filter(event_id=event_id).exists():
+                            ev = EventsLive.objects.filter(event_id=event_id)[0]
+
                             if ev.live_minute != live_minute:
                                 ev.live_minute = live_minute
                                 ev.save()
@@ -122,7 +116,7 @@ class SaveInDatabaseLive(View):
                             e = EventsLive.objects.create(title=event_title, country=country, status=event_status,
                                                          live_minute=live_minute, live_score_home=live_score_home,
                                                          live_score_away=live_score_away,
-                                                         created_at=timezone.now())
+                                                         created_at=timezone.now(), event_id=event_id)
                             e.save()
 
         return JsonResponse({
@@ -235,6 +229,12 @@ def leagues(request):
     return render(request, template, context)
 
 
+def about(request):
+    template = 'football/about.html'
+    context = {'title': 'About page'}
+    return render(request, template, context)
+
+
 class EventsPrematchAPI(APIView):
 
     def get(self, request):
@@ -248,7 +248,7 @@ class EventsPrematchAPI(APIView):
 class EventsLiveAPI(APIView):
 
     def get(self, request):
-        events = EventsLive.objects.filter(created_at__gt=(datetime.now() - timedelta(minutes=105)))
+        events = EventsLive.objects.filter(created_at__gt=(datetime.now() - timedelta(minutes=105))).distinct()
 
         serializer = EventsLiveSerializer(events, many=True)
 
@@ -268,7 +268,7 @@ class EventsFinishedAPI(APIView):
 class TeamsAPI(APIView):
 
     def get(self, request):
-        events = Teams.objects.all().order_by('league')
+        events = Teams.objects.all()
 
         serializer = TeamsSerializer(events, many=True)
 
@@ -278,7 +278,7 @@ class TeamsAPI(APIView):
 class LeaguesAPI(APIView):
 
     def get(self, request):
-        events = Leagues.objects.all().order_by('country')
+        events = Leagues.objects.all()
 
         serializer = LeaguesSerializer(events, many=True)
 

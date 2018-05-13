@@ -15,8 +15,7 @@ nav {
 }
 
 nav > a {
-    border: 1px dashed #000000;
-    text-decoration: none;
+    text-decoration: underline;
     padding: 5px;
     margin-top: 5px;
     font-size: 25px;
@@ -36,12 +35,14 @@ section {
 
 .legend-p {
     font-size: 25px;
-    text-align: justify;
+    text-align: center;
+    width: 100%;
 }
 
 .legend-item {
     padding-bottom: 5px;
     padding-top: 5px;
+    list-style: none;
 }
 
 .legend {

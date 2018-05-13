@@ -104,6 +104,7 @@ class Sofascore:
                         continue
 
                     for event in league_events:
+                        event_id = event['id']
                         name = event['name']
                         sport_title = event['sport']['name']
                         home_team = event['homeTeam']['name']
@@ -148,6 +149,7 @@ class Sofascore:
                             }
 
                         e = {
+                            'event_id': event_id,
                             'event_name': name,
                             'home_team': home_team,
                             'away_team': away_team,
@@ -244,11 +246,11 @@ class Sofascore:
             """
             try:
                 if self.period == 'prematch':
-                    self.session.post('http://127.0.0.1:8000/football/save_in_database_prematch/', data=json.dumps(data))
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_prematch/', data=json.dumps(data), timeout=10)
                 elif self.period == 'live':
-                    self.session.post('http://127.0.0.1:8000/football/save_in_database_live/', data=json.dumps(data))
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_live/', data=json.dumps(data), timeout=10)
                 else:
-                    self.session.post('http://127.0.0.1:8000/football/save_in_database_finished/', data=json.dumps(data))
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_finished/', data=json.dumps(data), timeout=10)
             except:
                 print("There is no connection to the server, so I can't send the data, but I'll continue work as I am "
                       "independent from the server.")
