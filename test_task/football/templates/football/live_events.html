@@ -1,0 +1,53 @@
+{% extends 'football/index.html' %}
+{% load static %}
+
+{% block title%}<title>{{ title }}</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">All live events table</h1>
+    <table id="events_live" class="compact" cellspacing="0" width="85%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>Live minute</th>
+                <th>Live score home</th>
+                <th>Live score away</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>Live minute</th>
+                <th>Live score home</th>
+                <th>Live score away</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $.get("/football/api_events_live/", function( response ){
+
+            $('#events_live').DataTable({
+                data: response,
+                columns: [
+                    {data: 'id'},
+                    {data: 'title'},
+                    {data: 'country'},
+                    {data: 'status'},
+                    {data: 'live_minute'},
+                    {data: 'live_score_home'},
+                    {data: 'live_score_away'},
+                ]
+            });
+        });
+    });
+</script>
+{% endblock %}

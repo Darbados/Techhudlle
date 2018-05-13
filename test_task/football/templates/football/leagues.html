@@ -1,0 +1,43 @@
+{% extends 'football/index.html' %}
+{% load static %}
+
+{% block title%}<title>{{ title }}</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">All Leagues Table</h1>
+    <table id="leagues" class="compact" cellspacing="0" width="85%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>League title</th>
+                <th>Country</th>
+                <th>Added At</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>League title</th>
+                <th>Country</th>
+                <th>Added At</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $.get("/football/api_leagues/", function( response ){
+            $('#leagues').DataTable({
+                data: response,
+                columns: [
+                    {data: 'id'},
+                    {data: 'league_title'},
+                    {data: 'country'},
+                    {data: 'added_at'},
+                ]
+            });
+        });
+    });
+</script>
+{% endblock %}
