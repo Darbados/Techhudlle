@@ -9,7 +9,6 @@
     <table id="events_live" class="compact" cellspacing="0" width="85%">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Title</th>
                 <th>Country</th>
                 <th>Status</th>
@@ -20,7 +19,6 @@
         </thead>
         <tfoot>
             <tr>
-                <th>ID</th>
                 <th>Title</th>
                 <th>Country</th>
                 <th>Status</th>
@@ -38,7 +36,6 @@
             $('#events_live').DataTable({
                 data: response,
                 columns: [
-                    {data: 'id'},
                     {data: 'title'},
                     {data: 'country'},
                     {data: 'status'},

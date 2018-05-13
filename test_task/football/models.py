@@ -58,6 +58,7 @@ class EventsLive(models.Model):
     live_score_home = models.IntegerField(default=0)
     live_score_away = models.IntegerField(default=0)
     created_at = models.DateTimeField('date created')
+    event_id = models.IntegerField()
 
     def __str__(self):
         return self.title

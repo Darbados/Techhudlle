@@ -15,8 +15,7 @@ nav {
 }
 
 nav > a {
-    border: 1px dashed #000000;
-    text-decoration: none;
+    text-decoration: underline;
     padding: 5px;
     margin-top: 5px;
     font-size: 25px;
