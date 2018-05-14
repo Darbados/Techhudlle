@@ -246,11 +246,11 @@ class Sofascore:
             """
             try:
                 if self.period == 'prematch':
-                    self.session.post('http://127.0.0.1:8000/football/save_in_database_prematch/', data=json.dumps(data), timeout=10)
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_prematch/', data=json.dumps(data))
                 elif self.period == 'live':
-                    self.session.post('http://127.0.0.1:8000/football/save_in_database_live/', data=json.dumps(data), timeout=10)
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_live/', data=json.dumps(data))
                 else:
-                    self.session.post('http://127.0.0.1:8000/football/save_in_database_finished/', data=json.dumps(data), timeout=10)
+                    self.session.post('http://127.0.0.1:8000/football/save_in_database_finished/', data=json.dumps(data))
             except:
                 print("There is no connection to the server, so I can't send the data, but I'll continue work as I am "
                       "independent from the server.")

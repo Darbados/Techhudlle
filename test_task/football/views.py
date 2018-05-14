@@ -238,7 +238,7 @@ def about(request):
 class EventsPrematchAPI(APIView):
 
     def get(self, request):
-        events = EventsPremach.objects.filter(start_time__gte=timezone.now())
+        events = EventsPremach.objects.filter(start_time__gte=timezone.now()).distinct()
 
         serializer = EventsPrematchSerializer(events, many=True)
 
@@ -258,7 +258,7 @@ class EventsLiveAPI(APIView):
 class EventsFinishedAPI(APIView):
 
     def get(self, request):
-        events = EventsFinished.objects.all()
+        events = EventsFinished.objects.all().distinct()
 
         serializer = EventsFinishedSerializer(events, many=True)
 

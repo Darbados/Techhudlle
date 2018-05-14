@@ -1,3 +1,3 @@
 from sofascore import Sofascore
-soccer = Sofascore(10, 'soccer', 'live')
+soccer = Sofascore(120, 'soccer', 'live')
 soccer.start()
