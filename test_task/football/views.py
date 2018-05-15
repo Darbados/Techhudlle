@@ -57,67 +57,7 @@ class SaveInDatabaseLive(View):
         data = json.loads(request.body)
         period = 'live'
 
-        for date, events in data.items():
-            for league in events:
-                country = ""
-                league_title = league.split(',')[0] if ',' in league else league
-
-                if len(data[date][league]):
-                    country = data[date][league][0]['country']
-
-                # Fill the leagues table with data
-                if Leagues.objects.filter(league_title=league_title).exists():
-                    pass
-                else:
-                    if league_title != '' and country != '':
-                        l = Leagues.objects.create(league_title=league_title, country=country,
-                                                      added_at=timezone.now())
-                        l.save()
-                    else:
-                        pass
-
-                # Fill the teams & events tables with data
-                if len(data[date][league]):
-                    for event in data[date][league]:
-                        event_id = event['event_id']
-                        team1 = event["home_team"]
-                        team2 = event["away_team"]
-                        event_title = event["event_name"]
-                        start_time = event["start_date"]
-
-                        event_status = event["status"]
-                        live_minute = event["liveScore"]["live_minute"]
-                        live_score_home = event["liveScore"]["home_team_score"]
-                        live_score_away = event["liveScore"]["away_team_score"]
-
-                        if not Teams.objects.filter(title=team1).exists():
-                            t1 = Teams.objects.create(title=team1, country=country, league=league_title,
-                                                         created_at=timezone.now())
-                            t1.save()
-                            t2 = Teams.objects.create(title=team2, country=country, league=league_title,
-                                                         created_at=timezone.now())
-                            t2.save()
-                        else:
-                            pass
-
-                        if EventsLive.objects.filter(event_id=event_id).exists():
-                            ev = EventsLive.objects.filter(event_id=event_id)[0]
-
-                            if ev.live_minute != live_minute:
-                                ev.live_minute = live_minute
-                                ev.save()
-                            if ev.live_score_home != live_score_home:
-                                ev.live_score_home = live_score_home
-                                ev.save()
-                            if ev.live_score_away != live_score_away:
-                                ev.live_score_away = live_score_away
-                                ev.save()
-                        else:
-                            e = EventsLive.objects.create(title=event_title, country=country, status=event_status,
-                                                         live_minute=live_minute, live_score_home=live_score_home,
-                                                         live_score_away=live_score_away,
-                                                         created_at=timezone.now(), event_id=event_id)
-                            e.save()
+        handle_received_source(data, Leagues, Teams, EventsFinished, timezone, datetime, 'live')
 
         return JsonResponse({
            'msg_type': 'Success',
@@ -142,56 +82,7 @@ class SaveInDatabaseFinished(View):
         data = json.loads(request.body)
         period = 'finished'
 
-        for date, events in data.items():
-            for league in events:
-                country = ""
-                league_title = league.split(',')[0] if ',' in league else league
-
-                if len(data[date][league]):
-                    country = data[date][league][0]['country']
-
-                # Fill the leagues table with data
-                if Leagues.objects.filter(league_title=league_title).exists():
-                    pass
-                else:
-                    if league_title != '' and country != '':
-                        l = Leagues.objects.create(league_title=league_title, country=country,
-                                                      added_at=timezone.now())
-                        l.save()
-                    else:
-                        pass
-
-                # Fill the teams & events tables with data
-                if len(data[date][league]):
-                    for event in data[date][league]:
-                        team1 = event["home_team"]
-                        team2 = event["away_team"]
-                        event_title = event["event_name"]
-                        start_time = event["start_date"]
-
-                        event_status = event["status"]
-                        live_minute = 0
-                        live_score_home = 0
-                        live_score_away = 0
-
-                        if period == 'finished':
-                            live_score_home = event["liveScore"]["home_team_score"]
-                            live_score_away = event["liveScore"]["away_team_score"]
-
-                        if not Teams.objects.filter(title=team1).exists():
-                            t1 = Teams.objects.create(title=team1, country=country, league=league_title,
-                                                         created_at=timezone.now())
-                            t1.save()
-                            t2 = Teams.objects.create(title=team2, country=country, league=league_title,
-                                                         created_at=timezone.now())
-                            t2.save()
-                        else:
-                            pass
-
-                        if not EventsFinished.objects.filter(title=event_title, start_time=start_time).exists():
-                            e = EventsFinished.objects.create(title=event_title, country=country, status=event_status,
-                                                         start_time=start_time, final_score_home=live_score_home, final_score_away=live_score_away)
-                            e.save()
+        handle_received_source(data, Leagues, Teams, EventsFinished, timezone, datetime, 'finished')
 
         return JsonResponse({
            'msg_type': 'Success',
@@ -238,7 +129,7 @@ def about(request):
 class EventsPrematchAPI(APIView):
 
     def get(self, request):
-        events = EventsPremach.objects.filter(start_time__gte=timezone.now()).distinct()
+        events = EventsPremach.objects.filter(start_time__gte=timezone.now())
 
         serializer = EventsPrematchSerializer(events, many=True)
 
@@ -248,7 +139,7 @@ class EventsPrematchAPI(APIView):
 class EventsLiveAPI(APIView):
 
     def get(self, request):
-        events = EventsLive.objects.filter(created_at__gt=(datetime.now() - timedelta(minutes=105))).distinct()
+        events = EventsLive.objects.filter(created_at__gt=(datetime.now() - timedelta(minutes=105)))
 
         serializer = EventsLiveSerializer(events, many=True)
 
@@ -258,7 +149,7 @@ class EventsLiveAPI(APIView):
 class EventsFinishedAPI(APIView):
 
     def get(self, request):
-        events = EventsFinished.objects.all().distinct()
+        events = EventsFinished.objects.all()
 
         serializer = EventsFinishedSerializer(events, many=True)
 
