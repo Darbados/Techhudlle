@@ -29,19 +29,7 @@ def handle_received_source(source, league_obj, team_obj, event_obj, time_func, d
                     team2 = event["away_team"]
                     event_title = event["event_name"]
                     start_time = event["start_date"]
-
                     event_status = event["status"]
-                    live_minute = 0
-                    live_score_home = 0
-                    live_score_away = 0
-
-                    if period == 'live':
-                        live_minute = event["liveScore"]["live_minute"]
-                        live_score_home = event["liveScore"]["home_team_score"]
-                        live_score_away = event["liveScore"]["away_team_score"]
-                    elif period == 'finished':
-                        live_score_home = event["liveScore"]["home_team_score"]
-                        live_score_away = event["liveScore"]["away_team_score"]
 
                     if not team_obj.objects.filter(title=team1).exists():
                         t1 = team_obj.objects.create(title=team1, country=country, league=league_title,
@@ -58,26 +46,5 @@ def handle_received_source(source, league_obj, team_obj, event_obj, time_func, d
                             e = event_obj.objects.create(title=event_title, country=country, status=event_status,
                                                          start_time=start_time)
                             e.save()
-                    elif period == 'live':
-                        if event_obj.objects.filter(title=event_title, start_time=start_time).exists():
-                            ev = event_obj.objects.filter(title=event_title, start_time=start_time)
-                            if ev.live_minute != live_minute:
-                                ev.live_minute = live_minute
-                                ev.save()
-                            if ev.live_score_home != live_score_home:
-                                ev.live_score_home = live_score_home
-                                ev.save()
-                            if ev.live_score_away != live_score_away:
-                                ev.live_score_away = live_score_away
-                                ev.save()
                         else:
-                            e = event_obj.objects.create(title=event_title, country=country, status=event_status,
-                                                         live_minute=live_minute, live_score_home=live_score_home,
-                                                         live_score_away=live_score_away,
-                                                         start_time=start_time)
-                            e.save()
-                    else:
-                        if not event_obj.objects.filter(title=event_title, start_time=start_time).exists():
-                            e = event_obj.objects.create(title=event_title, country=country, status=event_status,
-                                                         start_time=start_time, final_score_home=live_score_home, final_score_away=live_score_away)
-                            e.save()
+                            continue
