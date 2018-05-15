@@ -8,21 +8,21 @@ class EventsPrematchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventsPremach
-        fields = '__all__'
+        fields = ('id', 'title', 'country', 'status', 'start_time')
 
 
 class EventsLiveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventsLive
-        fields = '__all__'
+        fields = ('id', 'title', 'country', 'status', 'live_minute', 'live_score_home', 'live_score_away', 'created_at', 'event_id')
 
 
 class EventsFinishedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventsFinished
-        fields = '__all__'
+        fields = ('id', 'title', 'country', 'status', 'start_time', 'final_score_home', 'final_score_away')
 
 
 class TeamsSerializer(serializers.ModelSerializer):
