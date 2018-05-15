@@ -33,6 +33,17 @@ section {
     margin: 0 auto;
 }
 
+.to_link {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgb(0,0,0);
+}
+
+.to_link:hover {
+    color: #ec971f;
+}
+
 .legend-p {
     font-size: 25px;
     text-align: center;
