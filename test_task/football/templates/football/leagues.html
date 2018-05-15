@@ -9,7 +9,6 @@
     <table id="leagues" class="compact" cellspacing="0" width="85%">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>League title</th>
                 <th>Country</th>
                 <th>Added At</th>
@@ -17,7 +16,6 @@
         </thead>
         <tfoot>
             <tr>
-                <th>ID</th>
                 <th>League title</th>
                 <th>Country</th>
                 <th>Added At</th>
@@ -31,7 +29,6 @@
             $('#leagues').DataTable({
                 data: response,
                 columns: [
-                    {data: 'id'},
                     {data: 'league_title'},
                     {data: 'country'},
                     {data: 'added_at'},
