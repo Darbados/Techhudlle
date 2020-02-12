@@ -1,6 +1,6 @@
 certifi==2018.4.16
 chardet==3.0.4
-Django==1.10
+Django==1.11.28
 djangorestframework==3.8.2
 idna==2.6
 PyMySQL==0.8.1
